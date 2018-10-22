@@ -1,6 +1,7 @@
 import React from 'react';
-import NoteForm from "../note-form/note-form";
+import NoteForm from '../note-form/note-form';
 import uuid from 'uuid/v4';
+import NoteItem from '../note-item/note-item';
 
 
 class Dashboard extends React.Component {
@@ -16,20 +17,27 @@ class Dashboard extends React.Component {
       <ul>
         {
           this.state.notes.map((currentNote) => {
-            return <li key={currentNote.id}>
-              {currentNote.title} : {currentNote.content}
-            </li>
+            return  <NoteItem
+              note={currentNote}
+              handleRemoveNote = {this.handleRemoveNote}
+              handleUpdateNote = {this.handleUpdateNote}
+            />
           })
         }
       </ul>
     );
   };
 
+  handleRemoveNote = (noteToRemove) => {
+    this.setState((previousState) => ({
+      notes: previousState.notes.filter(currentNote => currentNote.id !== noteToRemove.id), // ! = =
+    }));
+  };
+
   handleAddNote = (note) => {
     note.createdOn = new Date();
     note.id = uuid();
-    note.editing = false;
-    note.completed = false;
+    note.updated = false;
     return this.setState((previousState) => {
       return {
         notes: [...previousState.notes, note],
@@ -37,29 +45,34 @@ class Dashboard extends React.Component {
     });
   };
 
-  // handleRemoveNote = (note) => {
-  //   let arr = [...this.state.notes];
-  //
-  //   for (let i = 0; i < arr.length; i++) {
-  //     if (arr[i].id === note.id) {
-  //       arr.splice(i, 1);
-  //     }
-  //   }
-  //
-  //   this.setState({
-  //       notes: arr,
-  //     }
-  //   );
-  // };
+  handleUpdateNote = (updatedNote) => {
+    note.updated = true;
+    return this.setState((previousState) => {
+      return { notes: previousState.notes.map(function (originalNote) {
+          if (originalNote.id === updatedNote.id) {
+            return updatedNote;
+          }
+          if (originalNote.id !== updatedNote.id) {
+            return originalNote;
+          }
+        })
+      }
+    })
+  };
+
+  calculateTotalNotes = () => {
+    return this.state.notes.length
+}
 
   render() {
     return (
       <section>
         <h2>Dashboard</h2>
         <p>Add new Note</p>
-        <NoteForm handleAddNote={this.handleAddNote}/>
-        <p>Here is a list of all your notes that you have created:</p>
+        <NoteForm handleComplete={this.handleAddNote}/>
+        <p>List of Saved Notes:</p>
         { this.renderNotes() }
+        <p>Total Notes Saved : {this.calculateTotalNotes() } </p>
       </section>
     );
   }

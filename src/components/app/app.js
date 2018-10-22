@@ -6,10 +6,6 @@ import Dashboard from '../dashboard/dashboard';
 import Home from '../home/home';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <main>

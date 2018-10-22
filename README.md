@@ -1,7 +1,9 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) JavaScript-401d26
 =======
 ## 28-Routes
- - This application allows the user to post notes onto their browser window.
+ - This application allows the user to:
+    - Post notes onto their browser window.
+    - Delete existing notes from their browser window.
 
 ## Getting Started
 - Fork this repository: https://github.com/jlhiskey/28-routes.git

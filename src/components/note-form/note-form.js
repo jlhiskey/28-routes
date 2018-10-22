@@ -1,16 +1,18 @@
 import React from 'react';
-import Dashboard from "../dashboard/dashboard";
 import PropTypes from 'prop-types';
 
 class NoteForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    const emptyState = {
       title: '',
       content: '',
     };
+
+    this.state = this.props.note ? this.props.note : emptyState;
   }
+
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
@@ -20,27 +22,28 @@ class NoteForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleAddNote(this.state);
+    this.props.handleComplete(this.state);
   };
 
   render() {
+    const buttonText = this.props.note ? 'Update' : 'Create';
     return (
       <form onSubmit={this.handleSubmit}>
         <input
           type="text"
           name="title"
-          placeholder="Add Title"
+          placeholder="title"
           value={this.state.title}
           onChange={this.handleChange}
         />
         <input
           type="text"
           name="content"
-          placeholder="Add Note"
+          placeholder="Content"
           value={this.state.content}
           onChange={this.handleChange}
         />
-        <button type="submit">Create New Note</button>
+        <button type="submit">{buttonText} Note</button>
       </form>
     );
   }
@@ -48,6 +51,7 @@ class NoteForm extends React.Component {
 
 NoteForm.propTypes = {
   handleAddNote : PropTypes.func,
+  handleUpdateNote : PropTypes.func,
 };
 
 
